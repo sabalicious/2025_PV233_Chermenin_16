@@ -68,7 +68,7 @@ private:
 
         smart_ptr<QFile> file(new QFile(logFilePath));
         if (!file->open(QIODevice::Append | QIODevice::Text)) {
-            // Не удалось открыть файл — можно добавить отладочный вывод, если надо
+            // Не удалось открыть файл
             return;
         }
 
