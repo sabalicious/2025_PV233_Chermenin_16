@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>650</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Монитор директорий</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayoutMain">
+
+    <!-- Заголовок -->
+    <item>
+     <widget class="QLabel" name="labelTitle">
+      <property name="text">
+       <string>Мониторинг изменений в директориях</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <family>Segoe UI</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #2A7AE2;</string>
+      </property>
+     </widget>
+    </item>
+
+    <!-- Блок выбора директорий -->
+    <item>
+     <widget class="QGroupBox" name="groupBoxDirectories">
+      <property name="title">
+       <string>Директории для мониторинга</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutDirectories">
+
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutDirInput">
+         <item>
+          <widget class="QLineEdit" name="directoryEdit"/>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutDirButtons">
+           <item>
+            <widget class="QPushButton" name="addButton">
+             <property name="text">
+              <string>Добавить</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: #4CAF50; color: white; font-weight: bold;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="removeButton">
+             <property name="text">
+              <string>Удалить</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: #f44336; color: white; font-weight: bold;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+
+       <item>
+        <widget class="QListWidget" name="directoryList"/>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Блок логов -->
+    <item>
+     <widget class="QGroupBox" name="groupBoxLogs">
+      <property name="title">
+       <string>Настройки логирования</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutLogs">
+
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutLogFile">
+         <item>
+          <widget class="QLineEdit" name="logFileEdit"/>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutLogButtons">
+           <item>
+            <widget class="QPushButton" name="setLogButton">
+             <property name="text">
+              <string>Установить файл</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: #2196F3; color: white; font-weight: bold;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="showLogButton">
+             <property name="text">
+              <string>Показать лог</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: #FF9800; color: white; font-weight: bold;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+
+       <item>
+        <widget class="QTextEdit" name="logTextEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="minimumHeight">
+          <number>160</number>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #f0f0f0; font-family: Consolas; font-size: 11pt;</string>
+         </property>
+        </widget>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
