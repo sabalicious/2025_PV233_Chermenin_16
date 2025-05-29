@@ -16,3 +16,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
+
+
+# C:\Users\Vlad\Documents
+# C:\Users\Vlad\qt\lab_10\monitor_log.txt

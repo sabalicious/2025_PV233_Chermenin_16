@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
+#include <QDir>
 
 class DirectoryMonitor : public QObject {
     Q_OBJECT
@@ -28,24 +29,51 @@ public:
         return logFilePath;
     }
 
-    void addDirectory(const QString &path) {
-        if (path.isEmpty()) return;
+    bool addPath(const QString &path) {
+        if (path.isEmpty()) return false;
 
-        if (!watcher->directories().contains(path)) {
-            watcher->addPath(path);
-            logChange(QString("Начат мониторинг директории: '%1'").arg(path));
+        QFileInfo fileInfo(path);
+        if (!fileInfo.exists()) {
+            return false;
+        }
+
+        QString absolutePath = fileInfo.absoluteFilePath();
+        
+        // Проверяем, не отслеживается ли уже этот путь
+        if (watcher->directories().contains(absolutePath) || 
+            watcher->files().contains(absolutePath)) {
+            return false;
+        }
+
+        if (fileInfo.isDir()) {
+            if (watcher->addPath(absolutePath)) {
+                logChange(QString("Начат мониторинг директории: '%1'").arg(absolutePath));
+                return true;
+            }
+        } else {
+            if (watcher->addPath(absolutePath)) {
+                logChange(QString("Начат мониторинг файла: '%1'").arg(absolutePath));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void removePath(const QString &path) {
+        QFileInfo fileInfo(path);
+        QString absolutePath = fileInfo.absoluteFilePath();
+        
+        if (watcher->directories().contains(absolutePath) || 
+            watcher->files().contains(absolutePath)) {
+            watcher->removePath(absolutePath);
+            logChange(QString("Прекращён мониторинг: '%1'").arg(absolutePath));
         }
     }
 
-    void removeDirectory(const QString &path) {
-        if (watcher->directories().contains(path)) {
-            watcher->removePath(path);
-            logChange(QString("Прекращён мониторинг директории: '%1'").arg(path));
-        }
-    }
-
-    QStringList monitoredDirectories() const {
-        return watcher->directories();
+    QStringList monitoredPaths() const {
+        QStringList allPaths;
+        allPaths << watcher->directories() << watcher->files();
+        return allPaths;
     }
 
 signals:

@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QDir>
+#include <QFileInfo>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), monitor(new DirectoryMonitor(this))
@@ -26,26 +28,36 @@ MainWindow::~MainWindow()
 
 void MainWindow::addDirectory()
 {
-    QString dir = ui->directoryEdit->text().trimmed();
-    if (dir.isEmpty()) {
-        QMessageBox::information(this, "Информация", "Введите путь к директории для добавления.");
+    QString path = ui->directoryEdit->text().trimmed();
+    if (path.isEmpty()) {
+        QMessageBox::information(this, "Информация", "Введите путь к файлу или директории для добавления.");
         return;
     }
 
-    monitor->addDirectory(dir);
-    updateDirectoryList();
-    ui->directoryEdit->clear();
+    QFileInfo fileInfo(path);
+    if (!fileInfo.exists()) {
+        QMessageBox::warning(this, "Ошибка", "Указанный путь не существует.");
+        return;
+    }
+
+    if (monitor->addPath(path)) {
+        updateDirectoryList();
+        ui->directoryEdit->clear();
+        ui->statusbar->showMessage(QString("Добавлен для мониторинга: %1").arg(path), 3000);
+    } else {
+        QMessageBox::warning(this, "Ошибка", "Не удалось добавить путь для мониторинга.");
+    }
 }
 
 void MainWindow::removeDirectory()
 {
-    QString dir = ui->directoryEdit->text().trimmed();
-    if (dir.isEmpty()) {
-        QMessageBox::information(this, "Информация", "Введите путь к директории для удаления.");
+    QString path = ui->directoryEdit->text().trimmed();
+    if (path.isEmpty()) {
+        QMessageBox::information(this, "Информация", "Введите путь к файлу или директории для удаления.");
         return;
     }
 
-    monitor->removeDirectory(dir);
+    monitor->removePath(path);
     updateDirectoryList();
     ui->directoryEdit->clear();
 }
@@ -93,5 +105,5 @@ void MainWindow::updateLogDisplay()
 void MainWindow::updateDirectoryList()
 {
     ui->directoryList->clear();
-    ui->directoryList->addItems(monitor->monitoredDirectories());
+    ui->directoryList->addItems(monitor->monitoredPaths());
 }
